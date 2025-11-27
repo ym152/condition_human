@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>生活中都有哪些「智商税」？</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background-color: #f6f6f6;
+      color: #1a1a1a;
+      line-height: 1.6;
+    }
+    /* 顶部导航 */
+    .navbar {
+      background-color: #ffffff;
+      color: #444;
+      padding: 10px 40px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(26,26,26,0.06);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .navbar-logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: #0084ff;
+      margin-right: 32px;
+    }
+    .navbar-menu span {
+      margin-right: 20px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    .navbar-search {
+      margin-left: auto;
+      margin-right: 16px;
+      flex: 1;
+      max-width: 420px;
+    }
+    .navbar-search input {
+      width: 100%;
+      padding: 6px 10px;
+      border-radius: 19px;
+      border: 1px solid #e5e5e5;
+      font-size: 14px;
+      outline: none;
+    }
+    .navbar-actions button {
+      margin-left: 8px;
+      padding: 6px 14px;
+      border-radius: 3px;
+      border: 1px solid #0084ff;
+      background: #0084ff;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .container {
+      max-width: 960px;
+      margin: 24px auto;
+      padding: 0 16px;
+    }
+    .question-card {
+      background-color: #fff;
+      padding: 24px 24px 18px;
+      border-radius: 4px;
+      box-shadow: 0 1px 3px rgba(26, 26, 26, 0.06);
+      margin-bottom: 16px;
+    }
+    /* 话题标签 */
+    .question-topics {
+      margin-bottom: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .topic-pill {
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: #f2f7ff;
+      border: 1px solid #d5e5ff;
+      color: #0084ff;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    /* 标题+右侧数据 */
+    .question-header-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .question-main {
+      flex: 1;
+      min-width: 0;
+    }
+    .question-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .question-detail {
+      font-size: 15px;
+      color: #1a1a1a;
+      margin-bottom: 8px;
+    }
+    .question-side {
+      display: flex;
+      align-items: stretch;
+      border-left: 1px solid #ebebeb;
+      margin-left: 24px;
+    }
+    .side-item {
+      padding: 4px 24px;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .side-item + .side-item {
+      border-left: 1px solid #ebebeb;
+    }
+    .side-label {
+      font-size: 14px;
+      color: #8590a6;
+    }
+    .side-number {
+      margin-top: 4px;
+      font-size: 22px;
+      font-weight: 700;
+      color: #000000;
+    }
+    /* 问题按钮区 */
+    .question-actions {
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 18px;
+      font-size: 18px;
+    }
+    .btn {
+      padding: 6px 14px;
+      border-radius: 3px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-primary {
+      background: #0084ff;
+      border-color: #0084ff;
+      color: #fff;
+    }
+    .btn-outline {
+      background: #fff;
+      border-color: #ccd8e5;
+      color: #1a1a1a;
+    }
+    .btn-text {
+      background: transparent;
+      border-color: transparent;
+      color: #8590a6;
+      padding-left: 0;
+      padding-right: 0;
+    }
+    .btn i {
+      font-style: normal;
+      margin-right: 4px;
+    }
+    .btn-follow.followed {
+      background: #8590a6;
+      border-color: #8590a6;
+      color: #fff;
+    }
+    .btn-share-question.shared {
+      color: #175199;
+    }
+    .btn-invite.invited {
+      border-color: #8590a6;
+      color: #8590a6;
+    }
+    .btn-good-question {
+      color: #8590a6;
+    }
+    .btn-good-question.voted {
+      color: #175199;
+    }
+    /* 好问题/分享图标 */
+    .icon-good {
+      margin-right: 4px;
+      font-size: 16px;
+      color: inherit;
+    }
+    .icon-share {
+      margin-right: 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .icon-share svg {
+      width: 16px;
+      height: 16px;
+      fill: #8590a6;
+    }
+    .btn-share-question.shared .icon-share svg {
+      fill: #175199;
+    }
+    /* 回答标题 */
+    .answer-header {
+      margin: 16px 0 8px;
+      font-size: 15px;
+      color: #444;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .answer-count {
+      font-weight: 600;
+    }
+    .answer-sort {
+      font-size: 14px;
+      color: #8590a6;
+      cursor: pointer;
+      user-select: none;
+    }
+    .answer-card {
+      background-color: #fff;
+      padding: 20px 24px 16px;
+      border-radius: 4px;
+      box-shadow: 0 1px 3px rgba(26, 26, 26, 0.06);
+      margin-bottom: 12px;
+      position: relative;
+    }
+    /* 头像+用户信息行（折叠前后统一） */
+    .answer-user-row,
+    .author-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .answer-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 4px;
+      margin-right: 8px;
+      object-fit: cover;
+      background: #dbe9ff;
+    }
+    .answer-author,
+    .author-name {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .answer-meta,
+    .folded-meta {
+      font-size: 12px;
+      color: #8590a6;
+    }
+    .folded-tag {
+      display: inline-block;
+      margin-left: 10px;
+      padding: 2px 8px;
+      background: #eef6ff;
+      color: #175199;
+      border-radius: 20px;
+      font-size: 12px;
+      border: 1px solid #d7e9ff;
+    }
+    /* 正文区域（不再折叠） */
+    .answer-content-wrapper {
+      position: relative;
+      margin-bottom: 8px;
+      margin-top: 8px;
+    }
+    .answer-content {
+      font-size: 15px;
+      color: #1a1a1a;
+      overflow: visible;
+      transition: max-height 0.25s ease;
+    }
+    .fade-mask {
+      display: none;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 40px;
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0),
+        rgba(255, 255, 255, 1)
+      );
+      pointer-events: none;
+    }
+    .answer-content.collapsed + .fade-mask {
+      display: block;
+    }
+    /* 回答底部：赞同 + 收藏 + 喜欢 靠左 */
+    .answer-footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 13px;
+      color: #8590a6;
+    }
+    .vote-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-vote-up {
+      border: none;
+      border-radius: 3px;
+      padding: 4px 12px;
+      background: #eaf3ff;
+      color: #0084ff;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .btn-vote-up .triangle {
+      margin-right: 4px;
+    }
+    .btn-vote-up.voted {
+      background: #0084ff;
+      color: #ffffff;
+    }
+    .btn-vote-down {
+      border: none;
+      border-radius: 3px;
+      padding: 4px 10px;
+      background: #eaf3ff;
+      color: #0084ff;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .answer-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+    }
+    .action-item {
+      cursor: pointer;
+      color: #8590a6;
+      display: inline-flex;
+      align-items: center;
+    }
+    /* 收藏/喜欢 图标放大 */
+    .action-item span.icon-big {
+      margin-right: 4px;
+      font-size: 18px;
+      line-height: 1;
+    }
+    .action-item.active {
+      color: #175199;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid #ebebeb;
+      margin: 16px 0;
+    }
+    /* 折叠入口 */
+    .hidden-entry {
+      font-size: 14px;
+      color: #444;
+      cursor: pointer;
+      user-select: none;
+      padding: 10px 0;
+    }
+    .hidden-entry .hidden-count {
+      font-weight: 500;
+    }
+    .hidden-entry:hover .hidden-count {
+      color: #175199;
+    }
+    .hidden-answers {
+      display: none;
+      margin-top: 8px;
+      margin-bottom: 16px;
+    }
+    .hidden-answers .inner-title-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 14px;
+      color: #8590a6;
+    }
+    .hidden-answers .inner-title-text {
+      margin: 0 auto;
+      white-space: nowrap;
+    }
+    .hidden-answers .inner-line {
+      flex: 1;
+      height: 1px;
+      background: #ebebeb;
+    }
+    .hidden-answers .answer-card {
+      background-color: #fafafa;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    }
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #8590a6;
+      margin: 24px 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- 顶部导航 -->
+  <div class="navbar">
+    <div class="navbar-logo">知乎</div>
+    <div class="navbar-menu">
+      <span>关注</span>
+      <span>推荐</span>
+      <span>热榜</span>
+      <span>专栏</span>
+    </div>
+    <div class="navbar-search">
+      <input placeholder="搜索你感兴趣的内容…" />
+    </div>
+    <div class="navbar-actions">
+      <button>登录/注册</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- 问题区域 -->
+    <div class="question-card">
+      <div class="question-topics">
+        <div class="topic-pill">销售</div>
+        <div class="topic-pill">欺骗</div>
+        <div class="topic-pill">低智商社会</div>
+        <div class="topic-pill">反智主义</div>
+        <div class="topic-pill">坑爹</div>
+      </div>
+
+      <div class="question-header-row">
+        <div class="question-main">
+          <div class="question-title">
+            生活中都有哪些「智商税」？
+          </div>
+          <div class="question-detail">
+            智商税，就是利用他人智商不高（也可以解释为蠢）而定向征收的费用。比如孕妇防辐射服就能算一个。你们还知道哪些？
+          </div>
+        </div>
+        <!-- 关注者 / 被浏览 -->
+        <div class="question-side">
+          <div class="side-item">
+            <div class="side-label">关注者</div>
+            <div class="side-number">27,787</div>
+          </div>
+          <div class="side-item">
+            <div class="side-label">被浏览</div>
+            <div class="side-number">13,152,161</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="question-actions">
+        <button class="btn btn-primary btn-follow">
+          <i class="star">★</i><span class="follow-text">关注问题</span>
+        </button>
+        <button class="btn btn-outline btn-invite"><i>✉</i>邀请回答</button>
+
+        <!-- 好问题按钮 -->
+        <button class="btn btn-text btn-good-question" data-base-count="11">
+          <span class="icon-good">▲</span>
+          <span class="good-text">好问题 221</span>
+        </button>
+
+        <!-- 分享按钮 -->
+        <button class="btn btn-text btn-share-question">
+          <span class="icon-share">
+            <svg viewBox="0 0 24 24">
+              <path d="M3 11.5L20 4l-3.5 16-4.5-5-4 3.5L9 11l9-5.5-9.5 4L3 11.5z"></path>
+            </svg>
+          </span>
+          <span class="share-text">分享</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 回答标题 -->
+    <div class="answer-header">
+      <div class="answer-count">正常回答示例如下</div>
+      <div class="answer-sort">默认排序 ▾</div>
+    </div>
+
+    <!-- 回答 1 -->
+    <div class="answer-card">
+      <div class="answer-user-row">
+        <img class="answer-avatar" src="1.jpg" alt="匿名用户">
+        <div>
+          <div class="answer-author">邹先生</div>
+          <div class="answer-meta">赞同 17 · 发布于 2015-12-24 22:10</div>
+        </div>
+      </div>
+      <div class="answer-content-wrapper">
+        <div class="answer-content">
+          脑x金、红桃x、中华x精、三x浆、生命x号等<br><br>
+          电视购物卖的各种手串21天学会，xxx语言大部分A股散户x租宝类p2p<br><br>
+          先想到这么多，欢迎补充。
+        </div>
+        <div class="fade-mask"></div>
+      </div>
+      <div class="answer-footer">
+        <div class="vote-group">
+          <button class="btn-vote-up" data-base-count="17">
+            <span class="triangle">▲</span>
+            <span class="vote-label">赞同</span>
+            <span class="vote-count">17</span>
+          </button>
+          <button class="btn-vote-down">▼</button>
+        </div>
+        <div class="answer-actions">
+          <span class="action-item action-collect">
+            <span class="icon-big">★</span><span class="collect-text">收藏</span>
+          </span>
+          <span class="action-item action-like">
+            <span class="icon-big">♥</span><span class="like-text">喜欢</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 回答 2 -->
+    <div class="answer-card">
+      <div class="answer-user-row">
+        <img class="answer-avatar" src="2.jpg" alt="匿名用户">
+        <div>
+          <div class="answer-author">大韭哥</div>
+          <div class="answer-meta">赞同 14 · 发布于 2016-01-25 12:38</div>
+        </div>
+      </div>
+      <div class="answer-content-wrapper">
+        <div class="answer-content">
+          各种卖得超贵的【取自纯天然的】维生素【保健品】。<br><br>
+          没错，汤成倍健，我黑的就是你。<br><br>
+          各位一定要吃纯天然的话，为什么不好好吃饭呢？
+        </div>
+        <div class="fade-mask"></div>
+      </div>
+      <div class="answer-footer">
+        <div class="vote-group">
+          <button class="btn-vote-up" data-base-count="14">
+            <span class="triangle">▲</span>
+            <span class="vote-label">赞同</span>
+            <span class="vote-count">14</span>
+          </button>
+          <button class="btn-vote-down">▼</button>
+        </div>
+        <div class="answer-actions">
+          <span class="action-item action-collect">
+            <span class="icon-big">★</span><span class="collect-text">收藏</span>
+          </span>
+          <span class="action-item action-like">
+            <span class="icon-big">♥</span><span class="like-text">喜欢</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 回答 3 -->
+    <div class="answer-card">
+      <div class="answer-user-row">
+        <img class="answer-avatar" src="3.jpg" alt="匿名用户">
+        <div>
+          <div class="answer-author">Shimmy</div>
+          <div class="answer-meta">赞同 12 · 发布于 2022-07-12 11:20</div>
+        </div>
+      </div>
+      <div class="answer-content-wrapper">
+        <div class="answer-content">
+          有那么几种奇怪的事情<br><br>
+          可以不吃的时候 额外吃什么东西 用来减肥<br><br>
+          可以不做的时候 额外做什么事情 用来省力<br><br>
+          可以不用的时候 额外买什么东西 用来省钱
+        </div>
+        <div class="fade-mask"></div>
+      </div>
+      <div class="answer-footer">
+        <div class="vote-group">
+          <button class="btn-vote-up" data-base-count="12">
+            <span class="triangle">▲</span>
+            <span class="vote-label">赞同</span>
+            <span class="vote-count">12</span>
+          </button>
+          <button class="btn-vote-down">▼</button>
+        </div>
+        <div class="answer-actions">
+          <span class="action-item action-collect">
+            <span class="icon-big">★</span><span class="collect-text">收藏</span>
+          </span>
+          <span class="action-item action-like">
+            <span class="icon-big">♥</span><span class="like-text">喜欢</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 分割线 -->
+    <hr class="divider">
+
+    <!-- 折叠回答入口 -->
+    <div class="hidden-entry" id="toggleHidden">
+      <span class="hidden-count">折叠回答示例如下</span>
+    </div>
+
+    <!-- 折叠回答列表 -->
+    <div class="hidden-answers" id="hiddenList">
+      <div class="inner-title-row">
+        <div class="inner-line"></div>
+        <div class="inner-title-text">折叠回答示例如下</div>
+        <div class="inner-line"></div>
+      </div>
+
+      <!-- 折叠回答 1 -->
+      <div class="answer-card">
+        <div class="author-row">
+          <img class="answer-avatar" src="4.jpg" alt="匿名用户">
+          <div class="author-name">我是狗</div>
+          <div class="folded-tag">人工审核后，该回答已被折叠⌄</div>
+        </div>
+        <div class="answer-content">
+          CFA，工作不久就发现了
+        </div>
+        <div class="folded-meta">发布于 2016-10-22 13:15</div>
+        <div class="answer-footer" style="margin-top:8px;">
+          <div class="vote-group">
+            <button class="btn-vote-up" data-base-count="1">
+              <span class="triangle">▲</span>
+              <span class="vote-label">赞同</span>
+              <span class="vote-count">1</span>
+            </button>
+            <button class="btn-vote-down">▼</button>
+          </div>
+          <div class="answer-actions">
+            <span class="action-item action-collect">
+              <span class="icon-big">★</span><span class="collect-text">收藏</span>
+            </span>
+            <span class="action-item action-like">
+              <span class="icon-big">♥</span><span class="like-text">喜欢</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 折叠回答 2 -->
+      <div class="answer-card">
+        <div class="author-row">
+          <img class="answer-avatar" src="5.jpg" alt="匿名用户">
+          <div class="author-name">nell nell</div>
+          <div class="folded-tag">人工审核后，该回答已被折叠 ⌄</div>
+        </div>
+        <div class="answer-content">
+          唉，就没有人和我一样把智商税理解为“智商太高到需要交税的地步”的人么？
+        </div>
+        <div class="folded-meta">编辑于 2015-12-22 00:22</div>
+        <div class="answer-footer" style="margin-top:8px;">
+          <div class="vote-group">
+            <button class="btn-vote-up" data-base-count="1">
+              <span class="triangle">▲</span>
+              <span class="vote-label">赞同</span>
+              <span class="vote-count">1</span>
+            </button>
+            <button class="btn-vote-down">▼</button>
+          </div>
+          <div class="answer-actions">
+            <span class="action-item action-collect">
+              <span class="icon-big">★</span><span class="collect-text">收藏</span>
+            </span>
+            <span class="action-item action-like">
+              <span class="icon-big">♥</span><span class="like-text">喜欢</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 折叠回答 3 -->
+      <div class="answer-card">
+        <div class="author-row">
+          <img class="answer-avatar" src="6.jpg" alt="匿名用户">
+          <div class="author-name">蒋梦梦</div>
+          <div class="folded-tag">人工审核后，该回答已被折叠 ⌄</div>
+        </div>
+        <div class="answer-content">
+          知乎首答，经常捡垃圾的人应该都知道我说的是什么
+        </div>
+        <div class="folded-meta">编辑于 2017-06-24 16:59 </div>
+        <div class="answer-footer" style="margin-top:8px;">
+          <div class="vote-group">
+            <button class="btn-vote-up" data-base-count="2">
+              <span class="triangle">▲</span>
+              <span class="vote-label">赞同</span>
+              <span class="vote-count">2</span>
+            </button>
+            <button class="btn-vote-down">▼</button>
+          </div>
+          <div class="answer-actions">
+            <span class="action-item action-collect">
+              <span class="icon-big">★</span><span class="collect-text">收藏</span>
+            </span>
+            <span class="action-item action-like">
+              <span class="icon-big">♥</span><span class="like-text">喜欢</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 折叠回答 4 -->
+      <div class="answer-card">
+        <div class="author-row">
+          <img class="answer-avatar" src="7.jpg" alt="匿名用户">
+          <div class="author-name">钟文</div>
+          <div class="folded-tag">人工审核后，该回答已被折叠 ⌄</div>
+        </div>
+        <div class="answer-content">
+          百花齐放！
+        </div>
+        <div class="folded-meta">编辑于 2017-02-14 08:44</div>
+        <div class="answer-footer" style="margin-top:8px;">
+          <div class="vote-group">
+            <button class="btn-vote-up" data-base-count="2">
+              <span class="triangle">▲</span>
+              <span class="vote-label">赞同</span>
+              <span class="vote-count">2</span>
+            </button>
+            <button class="btn-vote-down">▼</button>
+          </div>
+          <div class="answer-actions">
+            <span class="action-item action-collect">
+              <span class="icon-big">★</span><span class="collect-text">收藏</span>
+            </span>
+            <span class="action-item action-like">
+              <span class="icon-big">♥</span><span class="like-text">喜欢</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 其余 13 个折叠回答可按需补位 -->
+    </div>
+
+    <div class="footer">
+      本页面为实验HTML，非知乎官方页面。
+    </div>
+  </div>
+
+  <script>
+    // 关注问题
+    const followBtn = document.querySelector('.btn-follow');
+    followBtn.addEventListener('click', () => {
+      const textSpan = followBtn.querySelector('.follow-text');
+      const starIcon = followBtn.querySelector('.star');
+      const followed = followBtn.classList.contains('followed');
+      if (followed) {
+        followBtn.classList.remove('followed');
+        textSpan.textContent = '关注问题';
+        starIcon.style.display = 'inline-block';
+      } else {
+        followBtn.classList.add('followed');
+        textSpan.textContent = '已关注';
+        starIcon.style.display = 'inline-block';
+      }
+    });
+
+    // 邀请回答：点击后改为“已邀请”
+    const inviteBtn = document.querySelector('.btn-invite');
+    inviteBtn.addEventListener('click', () => {
+      const invited = inviteBtn.classList.contains('invited');
+      if (invited) {
+        inviteBtn.classList.remove('invited');
+        inviteBtn.innerHTML = '<i>✉</i>邀请回答';
+      } else {
+        inviteBtn.classList.add('invited');
+        inviteBtn.textContent = '已邀请';
+      }
+    });
+
+    // 好问题：点击后 +1，再点一次取消回到 11
+    const goodBtn = document.querySelector('.btn-good-question');
+    if (goodBtn) {
+      const base = parseInt(goodBtn.getAttribute('data-base-count') || '11', 10);
+      const goodText = goodBtn.querySelector('.good-text');
+      goodBtn.addEventListener('click', () => {
+        const voted = goodBtn.classList.contains('voted');
+        if (voted) {
+          goodBtn.classList.remove('voted');
+          goodText.textContent = '好问题 ' + base;
+        } else {
+          goodBtn.classList.add('voted');
+          goodText.textContent = '好问题 ' + (base + 1);
+        }
+      });
+    }
+
+    // 问题分享按钮：点击后显示“已分享”，再点一次恢复
+    const shareQuestionBtn = document.querySelector('.btn-share-question');
+    shareQuestionBtn.addEventListener('click', () => {
+      const shared = shareQuestionBtn.classList.contains('shared');
+      const shareText = shareQuestionBtn.querySelector('.share-text');
+      if (shared) {
+        shareQuestionBtn.classList.remove('shared');
+        shareText.textContent = '分享';
+      } else {
+        shareQuestionBtn.classList.add('shared');
+        shareText.textContent = '已分享';
+      }
+    });
+
+    // 赞同按钮
+    document.querySelectorAll('.btn-vote-up').forEach(function (btn) {
+      const base = parseInt(btn.getAttribute('data-base-count') || '0', 10);
+      const labelSpan = btn.querySelector('.vote-label');
+      const countSpan = btn.querySelector('.vote-count');
+      btn.addEventListener('click', function () {
+        const voted = btn.classList.contains('voted');
+        if (voted) {
+          btn.classList.remove('voted');
+          labelSpan.textContent = '赞同';
+          countSpan.textContent = base.toString();
+        } else {
+          btn.classList.add('voted');
+          labelSpan.textContent = '已赞同';
+          countSpan.textContent = (base + 1).toString();
+        }
+      });
+    });
+
+    // 收藏/喜欢
+    document.querySelectorAll('.action-collect').forEach(function (wrap) {
+      const textSpan = wrap.querySelector('.collect-text');
+      wrap.addEventListener('click', function () {
+        const active = wrap.classList.contains('active');
+        if (active) {
+          wrap.classList.remove('active');
+          textSpan.textContent = '收藏';
+        } else {
+          wrap.classList.add('active');
+          textSpan.textContent = '取消收藏';
+        }
+      });
+    });
+
+    document.querySelectorAll('.action-like').forEach(function (wrap) {
+      const textSpan = wrap.querySelector('.like-text');
+      wrap.addEventListener('click', function () {
+        const active = wrap.classList.contains('active');
+        if (active) {
+          wrap.classList.remove('active');
+          textSpan.textContent = '喜欢';
+        } else {
+          wrap.classList.add('active');
+          textSpan.textContent = '取消喜欢';
+        }
+      });
+    });
+
+    // 折叠回答入口：单独控制 hiddenList
+    const toggleHidden = document.getElementById('toggleHidden');
+    const hiddenList = document.getElementById('hiddenList');
+    let hiddenOpen = false;
+    if (toggleHidden && hiddenList) {
+      toggleHidden.addEventListener('click', () => {
+        hiddenOpen = !hiddenOpen;
+        if (hiddenOpen) {
+          hiddenList.style.display = 'block';
+          toggleHidden.querySelector('.hidden-count').textContent = '收起折叠的回答';
+        } else {
+          hiddenList.style.display = 'none';
+          toggleHidden.querySelector('.hidden-count').textContent = '折叠回答示例如下';
+        }
+      });
+    }
+  </script>
+</body>
+</html>
