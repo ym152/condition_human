@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>   
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
@@ -355,7 +355,7 @@
       display: inline-flex;
       align-items: center;
     }
-    /* 收藏/喜欢 */
+    /* 收藏/喜欢 图标放大 */
     .action-item span.icon-big {
       margin-right: 4px;
       font-size: 18px;
@@ -416,6 +416,15 @@
       font-size: 12px;
       color: #8590a6;
       margin: 24px 0;
+    }
+    .footer-btn {
+      padding: 6px 16px;
+      font-size: 12px;
+      border-radius: 4px;
+      border: 1px solid #0084ff;
+      background: #0084ff;
+      color: #ffffff;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -572,7 +581,7 @@
       </div>
     </div>
 
-    <!-- 回答 3 -->
+    <!-- 回答 3（最早） -->
     <div class="answer-card">
       <div class="answer-user-row">
         <img class="answer-avatar" src="3.jpg" alt="匿名用户">
@@ -636,7 +645,7 @@
           <div class="folded-tag">人工审核后，该回答已被折叠⌄</div>
         </div>
         <div class="answer-content">
-          CFA，工作不久就发现了
+        百花齐放！  
         </div>
         <div class="folded-meta">发布于 2022-07-25 16:34</div>
         <div class="answer-footer" style="margin-top:8px;">
@@ -666,7 +675,7 @@
           <div class="folded-tag">人工审核后，该回答已被折叠 ⌄</div>
         </div>
         <div class="answer-content">
-          唉，就没有人和我一样把智商税理解为“智商太高到需要交税的地步”的人么？
+         经常捡垃圾的人应该都知道我说的是什么
         </div>
         <div class="folded-meta">发布于 2022-07-18 20:20</div>
         <div class="answer-footer" style="margin-top:8px;">
@@ -696,7 +705,7 @@
           <div class="folded-tag">人工审核后，该回答已被折叠 ⌄</div>
         </div>
         <div class="answer-content">
-          知乎首答，经常捡垃圾的人应该都知道我说的是什么
+         CFA，工作不久就发现了
         </div>
         <div class="folded-meta">发布于 2022-07-12 09:10</div>
         <div class="answer-footer" style="margin-top:8px;">
@@ -726,7 +735,7 @@
           <div class="folded-tag">人工审核后，该回答已被折叠 ⌄</div>
         </div>
         <div class="answer-content">
-          百花齐放！
+          唉，就没有人和我一样把智商税理解为“智商太高到需要交税的地步”的人么？
         </div>
         <div class="folded-meta">发布于 2022-07-01 05:00</div>
         <div class="answer-footer" style="margin-top:8px;">
@@ -748,11 +757,18 @@
         </div>
       </div>
 
-      <!-- 其余 13 个折叠回答可按需补位 -->
+      <!-- 其余折叠回答可按需补位 --> 
     </div>
 
     <div class="footer">
-      本页面为实验HTML，非知乎官方页面。
+      <button
+        class="footer-btn"
+        id="returnBtn"
+        style="visibility:hidden;"
+        onclick="window.location.href='https://qualtricsxmxhqsslfq5.qualtrics.com/jfe/form/SV_9RyY4KhJhLHDOyq';"
+      >
+        返回问卷 
+      </button>
     </div>
   </div>
 
@@ -905,10 +921,14 @@
 
     // 初始化状态
     updateHiddenUI();
+
+    // 返回问卷按钮：进入界面 5 秒后再出现（预留空间，避免需要二次下拉）
+    const returnBtn = document.getElementById('returnBtn');
+    if (returnBtn) {
+      setTimeout(() => {
+        returnBtn.style.visibility = 'visible';
+      }, 5000);
+    }
   </script>
 </body>
 </html>
-
-
-
-
